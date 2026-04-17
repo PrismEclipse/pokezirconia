@@ -216,31 +216,10 @@ _SaveFileCorruptedText::
 	line "corrupted!"
 	prompt
 
-_ChangeBoxSaveText::
-	text "When you change a"
-	line "#MON BOX, data"
-	cont "will be saved. OK?"
-	done
-
-_MoveMonWOMailSaveText::
-	text "Each time you move"
-	line "a #MON, data"
-	cont "will be saved. OK?"
-	done
-
-_WindowAreaExceededErrorText:: ; unreferenced
-	text "The window save"
-	line "area was exceeded."
-	done
-
 _WindowPoppingErrorText::
 	text "No windows avail-"
 	line "able for popping."
 	done
-
-_CorruptedEventText:: ; unreferenced
-	text "Corrupted event!"
-	prompt
 
 _ObjectEventText::
 	text "Object event"
@@ -449,8 +428,6 @@ _CongratulationsYourPokemonText::
 	line "Your @"
 	text_ram wStringBuffer2
 	text_end
-
-	text_end ; unreferenced
 
 _EvolvedIntoText::
 	text_start
@@ -905,10 +882,6 @@ _PhoneThankYouText::
 	text "Thank you!"
 	done
 
-_SpaceSpaceColonText:: ; unreferenced
-	text "  :"
-	done
-
 _PasswordAskResetText::
 	text "Password OK."
 	line "Select CONTINUE &"
@@ -942,8 +915,6 @@ _LearnedMoveText::
 	sound_dex_fanfare_50_79
 	text_promptbutton
 	text_end
-
-	text_end ; unreferenced
 
 _MoveAskForgetText::
 	text "Which move should"
@@ -991,9 +962,7 @@ Text_MoveForgetCount::
 	text "1, 2 and…@"
 	text_pause
 	text_end
-
-	text_end ; unreferenced
-
+	
 _MoveForgotText::
 	text " Poof!@"
 	text_pause
@@ -1052,8 +1021,6 @@ _CardFlipDarnText::
 _GearTodayText::
 	text_today
 	text_end
-
-	text_end ; unreferenced
 
 _GearEllipseText::
 	text "<……>"
@@ -1222,18 +1189,15 @@ Text_BallCaught::
 	sound_caught_mon
 	text_end
 
-	text_end ; unreferenced
-
 _WaitButtonText::
 	text_promptbutton
 	text_end
 
-	text_end ; unreferenced
-
 _BallSentToPCText::
 	text_ram wMonOrItemNameBuffer
-	text " was"
-	line "sent to BILL's PC."
+	line "sent to @"
+	text_ram wStringBuffer1
+	text "."
 	prompt
 
 _NewDexDataText::
@@ -1244,8 +1208,6 @@ _NewDexDataText::
 	sound_slot_machine_start
 	text_promptbutton
 	text_end
-
-	text_end ; unreferenced
 
 _AskGiveNicknameText::
 	text "Give a nickname to"
@@ -1292,8 +1254,6 @@ Text_PlayedPokeFlute::
 	text_promptbutton
 	text_end
 
-	text_end ; unreferenced
-
 _BlueCardBalanceText::
 	text "You now have"
 	line "@"
@@ -1306,8 +1266,6 @@ _CoinCaseCountText::
 	line "@"
 	text_decimal wCoins, 2, 4
 	text_end
-
-	text_end ; unreferenced
 
 _RaiseThePPOfWhichMoveText::
 	text "Raise the PP of"
@@ -1393,11 +1351,26 @@ _ItemCantGetOnText::
 	text " now."
 	prompt
 
-_BallBoxFullText::
-	text "The #MON BOX"
+_CurBoxFullText::
+	text "@"
+	text_ram wStringBuffer1
+	text " is full."
+	prompt
+
+_StorageFullText::
+	text "The STORAGE SYSTEM"
 	line "is full. That"
 	cont "can't be used now."
 	prompt
+	
+_DatabaseFullText::
+	; too technical? needs improvement
+	text "The STORAGE SYSTEM"
+	line "is overtaxed."
+
+	para "You need to save"
+	line "the game."
+	prompt	
 
 _ItemUsedText::
 	text "<PLAYER> used the@"
