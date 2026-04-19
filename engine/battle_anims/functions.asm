@@ -195,6 +195,8 @@ BattleAnimFunc_MoveInCircle:
 	dw .one
 .zero
 	call BattleAnim_IncAnonJumptableIndex
+	ld a, JP_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	ld hl, BATTLEANIMSTRUCT_PARAM
 	add hl, bc
 	bit 7, [hl]
@@ -1219,6 +1221,8 @@ BattleAnimFunc_Surf:
 	ld a, [hl]
 	cp $70
 	jr c, .move_down
+	ld a, RETI_INSTRUCTION
+	ldh [hFunctionInstruction], a
 	xor a
 	ldh [hLCDCPointer], a
 	ldh [hLYOverrideStart], a
