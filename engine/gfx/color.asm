@@ -2,46 +2,46 @@ INCLUDE "engine/gfx/sgb_layouts.asm"
 
 DEF SHINY_ATK_MASK EQU %0010
 DEF SHINY_DEF_DV EQU 10
-DEF SHINY_SPD_DV EQU 10
-DEF SHINY_SPC_DV EQU 10
+DEF SHINY_SPD_DV EQU 15
+DEF SHINY_SPC_DV EQU 15
 
 CheckShininess:
 ; Check if a mon is shiny by DVs at bc.
 ; Return carry if shiny.
 
-	ld l, c
-	ld h, b
+    ld l, c
+    ld h, b
 
 ; Attack
-	ld a, [hl]
-	and SHINY_ATK_MASK << 4
-	jr z, .not_shiny
+    ld a, [hl]
+    and SHINY_ATK_MASK << 4
+;    jr z, .not_shiny
 
 ; Defense
-	ld a, [hli]
-	and %1111
-	cp SHINY_DEF_DV
-	jr nz, .not_shiny
+    ld a, [hli]
+    and %1111
+    cp SHINY_DEF_DV
+;    jr nz, .not_shiny
 
 ; Speed
-	ld a, [hl]
-	and %1111 << 4
-	cp SHINY_SPD_DV << 4
-	jr nz, .not_shiny
+    ld a, [hl]
+    and %1111 << 4
+    cp SHINY_SPD_DV << 4
+    jr nz, .not_shiny
 
 ; Special
-	ld a, [hl]
-	and %1111
-	cp SHINY_SPC_DV
-	jr nz, .not_shiny
+    ld a, [hl]
+    and %1111
+    cp SHINY_SPC_DV
+    jr nz, .not_shiny
 
 ; shiny
-	scf
-	ret
+    scf
+    ret
 
 .not_shiny
-	and a
-	ret
+    and a
+    ret
 
 Unused_CheckShininess:
 ; Return carry if the DVs at hl are all 10 or higher.
@@ -470,11 +470,12 @@ GetPredefPal:
 	ret
 
 LoadHLPaletteIntoDE:
+	ld c, 1 palettes
+LoadHLBytesIntoDE:
 	ldh a, [rWBK]
 	push af
 	ld a, BANK(wOBPals1)
 	ldh [rWBK], a
-	ld c, 1 palettes
 .loop
 	ld a, [hli]
 	ld [de], a
@@ -655,10 +656,23 @@ CGB_ApplyPartyMenuHPPals:
 InitPartyMenuOBPals:
 	ld hl, PartyMenuOBPals
 	ld de, wOBPals1
-	ld bc, 2 palettes
+	ld bc, 8 palettes
 	ld a, BANK(wOBPals1)
 	call FarCopyWRAM
 	ret
+	
+SetFirstOBJPalette::
+; input: e must contain the offset of the selected palette from PartyMenuOBPals
+	ld hl, PartyMenuOBPals
+	ld d, 0
+	add hl, de
+	ld de, wOBPals1
+	ld bc, 1 palettes
+	ld a, BANK(wOBPals1)
+	call FarCopyWRAM
+	ld a, TRUE
+	ldh [hCGBPalUpdate], a
+	jp ApplyPals	
 
 GetBattlemonBackpicPalettePointer:
 	push de
@@ -1300,6 +1314,19 @@ INCLUDE "gfx/stats/party_menu_bg_mobile.pal"
 
 PartyMenuBGPalette:
 INCLUDE "gfx/stats/party_menu_bg.pal"
+
+BillsPC_ThemePals:
+	table_width COLOR_SIZE * 4
+INCLUDE "gfx/pc/themes.pal"
+	assert_table_length NUM_BILLS_PC_THEMES
+
+BillsPC_CursorPalette:
+	; middle colors are set dynamically
+	RGB 31,31,31, 31,31,31, 00,00,00, 00,00,00
+BillsPC_PackPalette:
+	RGB 31,31,31, 31,31,31, 07,19,07, 00,00,00
+BillsPC_WhitePalette:
+	RGB 31,31,31, 31,31,31, 31,31,31, 31,31,31
 
 TilesetBGPalette:
 INCLUDE "gfx/tilesets/bg_tiles.pal"
